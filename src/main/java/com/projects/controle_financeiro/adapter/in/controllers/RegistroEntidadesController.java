@@ -3,10 +3,14 @@ package com.projects.controle_financeiro.adapter.in.controllers;
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaResponse;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.ContaBancariaMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoResponse;
 import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioRequest;
 import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioResponse;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.UsuarioMapper;
 import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
+import com.projects.controle_financeiro.application.domain.model.Movimentacao;
 import com.projects.controle_financeiro.application.service.RegistroEntidadesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,5 +34,10 @@ public class RegistroEntidadesController {
     @PostMapping("/contas")
     public ResponseEntity<ContaBancariaResponse> cadastrarConta(@RequestBody ContaBancariaRequest request){
         return ResponseEntity.status(201).body(ContaBancariaMapper.toResponse(service.cadastrarConta(request)));
+    }
+
+    @PostMapping("/movimentacoes")
+    public ResponseEntity<MovimentacaoResponse> cadastrarMovimentacao(@RequestBody MovimentacaoRequest request){
+        return ResponseEntity.status(201).body(MovimentacaoMapper.toResponse(service.cadastrarMovimentacao(request)));
     }
 }

@@ -34,4 +34,9 @@ public class ContaBancariaAdapter implements ContaBancariaPort {
     public void delContaBancaria(ContaBancaria conta) {
         repository.delete(conta);
     }
+
+    @Override
+    public void uptContaBancaria(ContaBancaria novaConta) {
+        repository.save(novaConta);
+    }
 }

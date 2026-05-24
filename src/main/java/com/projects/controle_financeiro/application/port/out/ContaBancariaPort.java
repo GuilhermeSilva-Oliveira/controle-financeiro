@@ -12,4 +12,5 @@ public interface ContaBancariaPort {
     List<ContaBancaria> listAllContaBancarias();
     Optional<ContaBancaria> listByIdContaBancaria(Long id);
     void delContaBancaria(ContaBancaria conta);
+    void uptContaBancaria(ContaBancaria novaConta);
 }

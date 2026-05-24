@@ -18,12 +18,15 @@ public class Movimentacao {
     private Long id;
     private String descricao;
     private Double valor;
+
+    @Column(name = "data_movimentacao")
     private LocalDateTime data;
+
+    @Column(name = "status_movimentacao")
     private String status;
     private Boolean recorrente;
-
-    @ManyToOne @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
+    private String tipoMovimentacao;
+    private String periodo;
 
     @ManyToOne @JoinColumn(name = "conta_id")
     private ContaBancaria conta;

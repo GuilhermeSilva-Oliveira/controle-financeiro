@@ -1,8 +1,8 @@
 package com.projects.controle_financeiro.application.domain.enums;
 
 public enum StatusMovimentacao {
-    ENVIADO("Movimentação Enviada"),
-    REGISTRADO("Movimentação Registrada");
+    PAGAR("PAGA"),
+    AGENDAR("AGENDADA");
 
     private final String status;
     StatusMovimentacao(String status){this.status = status;}
