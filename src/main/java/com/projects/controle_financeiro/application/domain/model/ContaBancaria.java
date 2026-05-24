@@ -14,8 +14,12 @@ import lombok.Setter;
 public class ContaBancaria {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JoinColumn(name = "nome_banco")
     private String nomeBanco;
     private Double saldo;
+
+    @JoinColumn(name = "tipo_conta")
     private String tipoConta;
 
     @ManyToOne @JoinColumn(name = "usuario_id")

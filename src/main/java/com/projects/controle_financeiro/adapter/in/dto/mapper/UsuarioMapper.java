@@ -1,7 +1,7 @@
 package com.projects.controle_financeiro.adapter.in.dto.mapper;
 
-import com.projects.controle_financeiro.adapter.in.dto.UsuarioRequest;
-import com.projects.controle_financeiro.adapter.in.dto.UsuarioResponse;
+import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioRequest;
+import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioResponse;
 import com.projects.controle_financeiro.application.domain.model.Usuario;
 
 import java.time.LocalDateTime;

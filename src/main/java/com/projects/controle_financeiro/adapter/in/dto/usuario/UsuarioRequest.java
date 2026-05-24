@@ -1,4 +1,4 @@
-package com.projects.controle_financeiro.adapter.in.dto;
+package com.projects.controle_financeiro.adapter.in.dto.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
