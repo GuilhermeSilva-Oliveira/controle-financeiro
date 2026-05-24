@@ -17,24 +17,22 @@ public interface RegistroEntidadesUseCase {
     Usuario cadastrarUsuario(Usuario usuario);
     List<Usuario> listarTodosUsuarios();
     Usuario listarPorIdUsuario(Long id);
-    void excluirUsuario(Usuario usuario);
+    void excluirUsuario(Long id);
 
     // CONTA BANCÁRIA
     ContaBancaria cadastrarConta(ContaBancariaRequest request);
     List<ContaBancaria> listarTodasContas();
     ContaBancaria listarPorIdConta(Long id);
-    void excluirConta(ContaBancaria conta);
-    void atualizarConta(ContaBancaria conta, Double novoSaldo);
+    void excluirConta(Long id);
 
     // MOVIMENTAÇÃO
     Movimentacao cadastrarMovimentacao(MovimentacaoRequest request);
     List<Movimentacao> listarTodasMovimentacoes();
     Movimentacao listarPorIdMovimentacao(Long id);
-    void excluirMovimentacao(Movimentacao movimentacao);
 
     // DESPESA
     Despesa cadastrarDespesa(DespesaRequest request);
     List<Despesa> listarTodasDespesas();
     Despesa listarPorIdDespesa(Long id);
-    void excluirDespesa(Despesa despesa);
+    void excluirDespesa(Despesa despesa,Long id);
 }

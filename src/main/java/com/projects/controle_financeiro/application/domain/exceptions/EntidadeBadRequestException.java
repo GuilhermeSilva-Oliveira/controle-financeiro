@@ -3,9 +3,9 @@ package com.projects.controle_financeiro.application.domain.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class EntidadeNotFound extends RuntimeException {
-    public EntidadeNotFound(String message) {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class EntidadeBadRequestException extends RuntimeException {
+    public EntidadeBadRequestException(String message) {
         super(message);
     }
 }
