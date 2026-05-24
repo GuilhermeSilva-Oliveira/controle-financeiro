@@ -2,7 +2,10 @@ package com.projects.controle_financeiro.adapter.in.controllers;
 
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaResponse;
+import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaRequest;
+import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaResponse;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.ContaBancariaMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.DespesaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoResponse;
@@ -39,5 +42,10 @@ public class RegistroEntidadesController {
     @PostMapping("/movimentacoes")
     public ResponseEntity<MovimentacaoResponse> cadastrarMovimentacao(@RequestBody MovimentacaoRequest request){
         return ResponseEntity.status(201).body(MovimentacaoMapper.toResponse(service.cadastrarMovimentacao(request)));
+    }
+
+    @PostMapping("/despesas")
+    public ResponseEntity<DespesaResponse> cadastrarDespesa(@RequestBody DespesaRequest request){
+        return ResponseEntity.status(201).body(DespesaMapper.toResponse(service.cadastrarDespesa(request)));
     }
 }

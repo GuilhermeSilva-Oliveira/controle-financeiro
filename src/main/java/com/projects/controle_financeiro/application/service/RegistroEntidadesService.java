@@ -1,7 +1,9 @@
 package com.projects.controle_financeiro.application.service;
 
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaRequest;
+import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.ContaBancariaMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.DespesaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
 import com.projects.controle_financeiro.application.domain.enums.StatusMovimentacao;
@@ -10,10 +12,12 @@ import com.projects.controle_financeiro.application.domain.enums.TipoMovimentaca
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeBadRequest;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNotFound;
 import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
+import com.projects.controle_financeiro.application.domain.model.Despesa;
 import com.projects.controle_financeiro.application.domain.model.Movimentacao;
 import com.projects.controle_financeiro.application.domain.model.Usuario;
 import com.projects.controle_financeiro.application.port.in.RegistroEntidadesUseCase;
 import com.projects.controle_financeiro.application.port.out.ContaBancariaPort;
+import com.projects.controle_financeiro.application.port.out.DespesaPort;
 import com.projects.controle_financeiro.application.port.out.MovimentacaoPort;
 import com.projects.controle_financeiro.application.port.out.UsuarioPort;
 import org.springframework.stereotype.Service;
@@ -27,11 +31,13 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     private final UsuarioPort usuarioPort;
     private final ContaBancariaPort contaBancariaPort;
     private final MovimentacaoPort movimentacaoPort;
+    private final DespesaPort despesaPort;
 
-    public RegistroEntidadesService(UsuarioPort usuarioPort, ContaBancariaPort contaBancariaPort, MovimentacaoPort movimentacaoPort) {
+    public RegistroEntidadesService(UsuarioPort usuarioPort, ContaBancariaPort contaBancariaPort, MovimentacaoPort movimentacaoPort, DespesaPort despesaPort) {
         this.usuarioPort = usuarioPort;
         this.contaBancariaPort = contaBancariaPort;
         this.movimentacaoPort = movimentacaoPort;
+        this.despesaPort = despesaPort;
     }
 
     // USUÁRIO
@@ -137,6 +143,32 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     @Override
     public void excluirMovimentacao(Movimentacao movimentacao) {
         movimentacaoPort.delMovimentacao(movimentacao);
+    }
+
+    // DESPESA
+    @Override
+    public Despesa cadastrarDespesa(DespesaRequest request) {
+        Despesa despesa = DespesaMapper.toEntity(request);
+        ContaBancaria conta = listarPorIdConta(request.contaId());
+        despesa.setConta(conta);
+        return despesaPort.addDespesa(despesa);
+    }
+
+    @Override
+    public List<Despesa> listarTodasDespesas() {
+        return despesaPort.listAllDespesas();
+    }
+
+    @Override
+    public Despesa listarPorIdDespesa(Long id) {
+        Optional<Despesa> opt = despesaPort.listByIdDespesa(id);
+        if (opt.isEmpty()){throw new EntidadeNotFound("Despesa Não Encontrada");}
+        return opt.get();
+    }
+
+    @Override
+    public void excluirDespesa(Despesa despesa) {
+        despesaPort.delDespesa(despesa);
     }
 
     // FUNÇÕES COMPLEMENTARES
