@@ -1,0 +1,52 @@
+package com.projects.controle_financeiro.adapter.in.controllers;
+
+import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaRequest;
+import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaResponse;
+import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaRequest;
+import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaResponse;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.ContaBancariaMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.DespesaMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoResponse;
+import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioRequest;
+import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioResponse;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.UsuarioMapper;
+import com.projects.controle_financeiro.application.domain.model.Movimentacao;
+import com.projects.controle_financeiro.application.service.RegistroEntidadesService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/registros")
+public class RegistroEntidadesController {
+    private final RegistroEntidadesService service;
+    public RegistroEntidadesController(RegistroEntidadesService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/usuarios")
+    public ResponseEntity<UsuarioResponse> cadastrarUsuario(@RequestBody UsuarioRequest request){
+        return ResponseEntity.status(201).body(UsuarioMapper.toResponse(service.cadastrarUsuario(UsuarioMapper.toEntity(request))));
+    }
+
+    @PostMapping("/contas")
+    public ResponseEntity<ContaBancariaResponse> cadastrarConta(@RequestBody ContaBancariaRequest request){
+        return ResponseEntity.status(201).body(ContaBancariaMapper.toResponse(service.cadastrarConta(request)));
+    }
+
+    @PostMapping("/movimentacoes")
+    public ResponseEntity<MovimentacaoResponse> cadastrarMovimentacao(@RequestBody MovimentacaoRequest request){
+        return ResponseEntity.status(201).body(MovimentacaoMapper.toResponse(service.cadastrarMovimentacao(request)));
+    }
+
+    @PostMapping("/despesas")
+    public ResponseEntity<DespesaResponse> cadastrarDespesa(@RequestBody DespesaRequest request){
+        return ResponseEntity.status(201).body(DespesaMapper.toResponse(service.cadastrarDespesa(request)));
+    }
+
+    @PostMapping("/pagar/{id}")
+    public ResponseEntity<MovimentacaoResponse> pagarDespesa(@PathVariable Long id, @RequestParam Double valor){
+        return ResponseEntity.status(201).body(MovimentacaoMapper.toResponse(service.pagarDespesa(id,valor)));
+    }
+}
