@@ -5,46 +5,39 @@ import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.ContaBancariaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.DespesaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper;
+import com.projects.controle_financeiro.adapter.in.dto.mapper.RendaRecorrenteMapper;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.renda_recorrente.RendaRecorrenteRequest;
 import com.projects.controle_financeiro.application.domain.enums.StatusMovimentacao;
 import com.projects.controle_financeiro.application.domain.enums.TipoConta;
+import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeBadRequestException;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNotFoundException;
 import com.projects.controle_financeiro.application.domain.exceptions.RegraNegocioException;
-import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
-import com.projects.controle_financeiro.application.domain.model.Despesa;
-import com.projects.controle_financeiro.application.domain.model.Movimentacao;
-import com.projects.controle_financeiro.application.domain.model.Usuario;
+import com.projects.controle_financeiro.application.domain.model.*;
 import com.projects.controle_financeiro.application.domain.strategy.MovimentacaoStrategy;
 import com.projects.controle_financeiro.application.port.in.RegistroEntidadesUseCase;
-import com.projects.controle_financeiro.application.port.out.ContaBancariaPort;
-import com.projects.controle_financeiro.application.port.out.DespesaPort;
-import com.projects.controle_financeiro.application.port.out.MovimentacaoPort;
-import com.projects.controle_financeiro.application.port.out.UsuarioPort;
+import com.projects.controle_financeiro.application.port.out.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     private final UsuarioPort usuarioPort;
     private final ContaBancariaPort contaBancariaPort;
     private final MovimentacaoPort movimentacaoPort;
     private final DespesaPort despesaPort;
+    private final RendaRecorrentePort rendaPort;
     private final List<MovimentacaoStrategy> strategies;
-
-    public RegistroEntidadesService(UsuarioPort usuarioPort, ContaBancariaPort contaBancariaPort, MovimentacaoPort movimentacaoPort, DespesaPort despesaPort, List<MovimentacaoStrategy> strategies) {
-        this.usuarioPort = usuarioPort;
-        this.contaBancariaPort = contaBancariaPort;
-        this.movimentacaoPort = movimentacaoPort;
-        this.despesaPort = despesaPort;
-        this.strategies = strategies;
-    }
-
+    
     // USUÁRIO
     @Override
     public Usuario cadastrarUsuario(Usuario usuario) {
@@ -127,8 +120,8 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         }else{movimentacao.setStatus(StatusMovimentacao.AGENDAR.getStatus());}
         Double saldoFinal = strategy.movimentar(conta.getSaldo(),request.valor());
         atualizarConta(conta,saldoFinal);
-        if (request.recorrente()){movimentacao.setPeriodo(request.periodo().toUpperCase());}
         movimentacao.setConta(listarPorIdConta(request.contaId()));
+        if (request.recorrente()){movimentacao.setPeriodo(request.periodo().toUpperCase());shouldRegistrarRenda(movimentacao);}
         Movimentacao salvo = movimentacaoPort.addMovimentacao(movimentacao);
         log.info("Movimentação Cadastrada");
         return salvo;
@@ -149,6 +142,15 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         if (opt.isEmpty()){throw new EntidadeNotFoundException("Movimentação Não Encontrada");}
         log.info("Movimentação Encontrada");
         return opt.get();
+    }
+
+    @Override
+    public Movimentacao pagarDespesa(Long id, Double valor) {
+        Despesa despesa = listarPorIdDespesa(id);
+        if (validarPagamento(valor,despesa.getValor())){despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));}
+        else {throw new RegraNegocioException("Valor Pago Insuficiente");}
+        Movimentacao movimentacao = gerarMovimentacao(despesa);
+        return movimentacaoPort.addMovimentacao(movimentacao);
     }
 
     // DESPESA
@@ -181,6 +183,33 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         despesaPort.addDespesa(despesa);
     }
 
+    // RENDA RECORRENTE
+    @Override
+    public RendaRecorrente cadastrarRenda(RendaRecorrenteRequest request) {
+        RendaRecorrente renda = RendaRecorrenteMapper.toEntity(request);
+        ContaBancaria conta = listarPorIdConta(request.contaId());
+        renda.setConta(conta);
+        return rendaPort.addRendaRecorrente(renda);
+    }
+
+    @Override
+    public List<RendaRecorrente> listarTodasRendas() {
+        return rendaPort.listAllRendas();
+    }
+
+    @Override
+    public RendaRecorrente listarPorIdRenda(Long id) {
+        Optional<RendaRecorrente> opt = rendaPort.listByIdRenda(id);
+        if (opt.isEmpty()){throw new EntidadeNotFoundException("Renda Não Encontrada");}
+        return opt.get();
+    }
+
+    @Override
+    public void excluirRenda(Long id) {
+        RendaRecorrente atualizar = listarPorIdRenda(id);
+        atualizar.setAtivo(false);
+        rendaPort.addRendaRecorrente(atualizar);
+    }
 
     // -------------------------- FUNÇÕES COMPLEMENTARES --------------------------
     public Boolean validTipoConta(String tipoConta){
@@ -198,5 +227,39 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     public void atualizarConta(ContaBancaria conta, Double novoSaldo) {
         conta.setSaldo(novoSaldo);
         contaBancariaPort.uptContaBancaria(conta);
+    }
+    public Boolean validarPagamento(Double pagamento, Double valorDespesa){
+        System.out.println("Pagamento: " + pagamento);
+        System.out.println("Despesa: " + valorDespesa);
+        return pagamento.equals(valorDespesa);
+    }
+
+    public Movimentacao gerarMovimentacao(Despesa despesa){
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setStatus(StatusMovimentacao.PAGAR.getStatus());
+        movimentacao.setDescricao(despesa.getDescricao());
+        movimentacao.setPeriodo(despesa.getPeriodo());
+        movimentacao.setConta(despesa.getConta());
+        movimentacao.setValor(despesa.getValor());
+        movimentacao.setTipoMovimentacao(TipoMovimentacao.DESPESA.getStatus());
+        movimentacao.setRecorrente(despesa.getAtivo());
+        movimentacao.setData(LocalDateTime.now());
+        Double novoSaldo = despesa.getConta().getSaldo() - despesa.getValor();
+        atualizarConta(despesa.getConta(),novoSaldo);
+        return movimentacao;
+    }
+
+    public void shouldRegistrarRenda(Movimentacao movimentacao){
+        List<Movimentacao> movimentacoes = listarTodasMovimentacoes();
+        Boolean newMovimentacao = true;
+        for (Movimentacao m : movimentacoes){
+            if (m.getDescricao().equals(movimentacao.getDescricao())){
+                newMovimentacao = false;
+            }
+        }
+        if (newMovimentacao){
+            RendaRecorrenteRequest request = new RendaRecorrenteRequest(movimentacao.getDescricao().toUpperCase(),movimentacao.getValor(),movimentacao.getPeriodo(),movimentacao.getData(),movimentacao.getConta().getId());
+            cadastrarRenda(request);
+        }
     }
 }

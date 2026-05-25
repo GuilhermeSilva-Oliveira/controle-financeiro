@@ -29,9 +29,4 @@ public class MovimentacaoAdapter implements MovimentacaoPort {
     public Optional<Movimentacao> listByIdMovimentacao(Long id) {
         return repository.findById(id);
     }
-
-    @Override
-    public void delMovimentacao(Movimentacao movimentacao) {
-        repository.delete(movimentacao);
-    }
 }

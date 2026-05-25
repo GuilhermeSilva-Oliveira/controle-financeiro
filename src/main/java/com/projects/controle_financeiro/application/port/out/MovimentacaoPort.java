@@ -11,5 +11,4 @@ public interface MovimentacaoPort {
     Movimentacao addMovimentacao(Movimentacao movimentacao);
     List<Movimentacao> listAllMovimentacoes();
     Optional<Movimentacao> listByIdMovimentacao(Long id);
-    void delMovimentacao(Movimentacao movimentacao);
 }

@@ -3,10 +3,8 @@ package com.projects.controle_financeiro.application.port.in;
 import com.projects.controle_financeiro.adapter.in.dto.conta_bancaria.ContaBancariaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.despesa.DespesaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
-import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
-import com.projects.controle_financeiro.application.domain.model.Despesa;
-import com.projects.controle_financeiro.application.domain.model.Movimentacao;
-import com.projects.controle_financeiro.application.domain.model.Usuario;
+import com.projects.controle_financeiro.adapter.in.dto.renda_recorrente.RendaRecorrenteRequest;
+import com.projects.controle_financeiro.application.domain.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,10 +27,17 @@ public interface RegistroEntidadesUseCase {
     Movimentacao cadastrarMovimentacao(MovimentacaoRequest request);
     List<Movimentacao> listarTodasMovimentacoes();
     Movimentacao listarPorIdMovimentacao(Long id);
+    Movimentacao pagarDespesa(Long id,Double valor);
 
     // DESPESA
     Despesa cadastrarDespesa(DespesaRequest request);
     List<Despesa> listarTodasDespesas();
     Despesa listarPorIdDespesa(Long id);
     void excluirDespesa(Despesa despesa,Long id);
+
+    // RENDA RECORRENTE
+    RendaRecorrente cadastrarRenda(RendaRecorrenteRequest request);
+    List<RendaRecorrente> listarTodasRendas();
+    RendaRecorrente listarPorIdRenda(Long id);
+    void excluirRenda(Long id);
 }

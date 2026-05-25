@@ -12,5 +12,4 @@ public interface DespesaPort {
     Despesa addDespesa(Despesa despesa);
     List<Despesa> listAllDespesas();
     Optional<Despesa> listByIdDespesa(Long id);
-    void delDespesa(Despesa despesa);
 }

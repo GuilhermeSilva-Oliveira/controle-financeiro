@@ -29,9 +29,4 @@ public class DespesaAdapter implements DespesaPort {
     public Optional<Despesa> listByIdDespesa(Long id) {
         return repository.findById(id);
     }
-
-    @Override
-    public void delDespesa(Despesa despesa) {
-        repository.delete(despesa);
-    }
 }
