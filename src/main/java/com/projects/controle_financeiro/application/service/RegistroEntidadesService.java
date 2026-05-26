@@ -146,10 +146,12 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
 
     @Override
     public Movimentacao pagarDespesa(Long id, Double valor) {
+        log.info("Iniciando Pagamento de Despesa");
         Despesa despesa = listarPorIdDespesa(id);
         if (validarPagamento(valor,despesa.getValor())){despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));}
         else {throw new RegraNegocioException("Valor Pago Insuficiente");}
         Movimentacao movimentacao = gerarMovimentacao(despesa);
+        log.info("Pagamento de Despesa Finalizado");
         return movimentacaoPort.addMovimentacao(movimentacao);
     }
 
@@ -157,58 +159,76 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     @Override
     public Despesa cadastrarDespesa(DespesaRequest request) {
         // ADICIONAR VALIDAÇÃO POR TIPO DE DESPESA
+        log.info("Iniciando Cadastro de Despesa");
         Despesa despesa = DespesaMapper.toEntity(request);
         ContaBancaria conta = listarPorIdConta(request.contaId());
         despesa.setConta(conta);
+        log.info("Cadastro de Despesa Finalizado");
         return despesaPort.addDespesa(despesa);
     }
 
     @Override
     public List<Despesa> listarTodasDespesas() {
-        return despesaPort.listAllDespesas();
+        log.info("Iniciando Listagem de Despesas");
+        List<Despesa> despesas = despesaPort.listAllDespesas();
+        log.info("Listagem de Despesas Finalizadas");
+        return despesas;
     }
 
     @Override
     public Despesa listarPorIdDespesa(Long id) {
+        log.info("Iniciando Busca de Despesa por Id");
         Optional<Despesa> opt = despesaPort.listByIdDespesa(id);
         if (opt.isEmpty()){throw new EntidadeNotFoundException("Despesa Não Encontrada");}
+        log.info("Despesa Encontrada por Id");
         return opt.get();
     }
 
     @Override
     public void excluirDespesa(Despesa despesa,Long id) {
+        log.info("Iniciando Exclusão de Despesa");
         Despesa atualizar = listarPorIdDespesa(id);
         despesa.setId(atualizar.getId());
         despesa.setAtivo(false);
         despesaPort.addDespesa(despesa);
+        log.info("Despesa Excluída");
     }
 
     // RENDA RECORRENTE
     @Override
     public Renda cadastrarRenda(RendaRecorrenteRequest request) {
+        log.info("Iniciando Cadastro de Renda");
         Renda renda = RendaRecorrenteMapper.toEntity(request);
         ContaBancaria conta = listarPorIdConta(request.contaId());
         renda.setConta(conta);
+        log.info("Renda Cadastrada com Sucesso");
         return rendaPort.addRendaRecorrente(renda);
     }
 
     @Override
     public List<Renda> listarTodasRendas() {
-        return rendaPort.listAllRendas();
+        log.info("Iniciando Listagem de Rendas");
+        List<Renda> rendas = rendaPort.listAllRendas();
+        log.info("Listagem de Rendas Finalizada");
+        return rendas;
     }
 
     @Override
     public Renda listarPorIdRenda(Long id) {
+        log.info("Iniciando Busca por Id de Renda");
         Optional<Renda> opt = rendaPort.listByIdRenda(id);
         if (opt.isEmpty()){throw new EntidadeNotFoundException("Renda Não Encontrada");}
+        log.info("Renda Encontrada");
         return opt.get();
     }
 
     @Override
     public void excluirRenda(Long id) {
+        log.info("Iniciando Exclusão de Renda");
         Renda atualizar = listarPorIdRenda(id);
         atualizar.setAtivo(false);
         rendaPort.addRendaRecorrente(atualizar);
+        log.info("Renda Excluída");
     }
 
     // -------------------------- FUNÇÕES COMPLEMENTARES --------------------------
