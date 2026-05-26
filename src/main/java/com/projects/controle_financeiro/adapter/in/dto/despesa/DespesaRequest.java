@@ -14,6 +14,7 @@ public record DespesaRequest(
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         @NotNull LocalDateTime dataVencimento,
         @NotNull Boolean ativo,
+        @NotNull Boolean paga,
         @NotNull Boolean parcelado,
         @NotNull Long contaId
 ) {}

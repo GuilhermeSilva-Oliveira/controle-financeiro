@@ -13,6 +13,7 @@ public record DespesaResponse(
         String periodo,
         LocalDateTime dataVencimento,
         Boolean ativo,
+        Boolean paga,
         Boolean parcelado,
         ContaBancaria conta
 ) {}

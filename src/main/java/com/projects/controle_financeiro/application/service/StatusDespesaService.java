@@ -21,9 +21,14 @@ public class StatusDespesaService implements StatusDespesaUseCase {
     public void validarVencimento() {
         List<Despesa> despesas = repository.findAll();
         for (Despesa d : despesas){
-            if (d.getDataVencimento().isEqual(LocalDateTime.now())){
-                log.info("DESPESA VENCIDA para Despesa={}",d);
+            if (validarTempo(d.getDataVencimento())){
+                log.info("DESPESA VENCIDA para Despesa={} na Data={}",d.getDescricao(),d.getDataVencimento());
             }
         }
+    }
+
+    // FUNÇÕES COMPLEMENTARES
+    public Boolean validarTempo(LocalDateTime vencimento){
+        return vencimento.isEqual(LocalDateTime.now()) || vencimento.isBefore(LocalDateTime.now());
     }
 }

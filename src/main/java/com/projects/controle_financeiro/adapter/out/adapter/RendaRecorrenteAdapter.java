@@ -1,7 +1,7 @@
 package com.projects.controle_financeiro.adapter.out.adapter;
 
 import com.projects.controle_financeiro.adapter.out.repository.RendaRecorrenteRepository;
-import com.projects.controle_financeiro.application.domain.model.RendaRecorrente;
+import com.projects.controle_financeiro.application.domain.model.Renda;
 import com.projects.controle_financeiro.application.port.out.RendaRecorrentePort;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +16,17 @@ public class RendaRecorrenteAdapter implements RendaRecorrentePort {
     }
 
     @Override
-    public RendaRecorrente addRendaRecorrente(RendaRecorrente renda) {
+    public Renda addRendaRecorrente(Renda renda) {
         return repository.save(renda);
     }
 
     @Override
-    public List<RendaRecorrente> listAllRendas() {
+    public List<Renda> listAllRendas() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<RendaRecorrente> listByIdRenda(Long id) {
+    public Optional<Renda> listByIdRenda(Long id) {
         return repository.findById(id);
     }
 }

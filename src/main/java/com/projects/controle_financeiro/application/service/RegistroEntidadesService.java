@@ -37,7 +37,7 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     private final DespesaPort despesaPort;
     private final RendaRecorrentePort rendaPort;
     private final List<MovimentacaoStrategy> strategies;
-    
+
     // USUÁRIO
     @Override
     public Usuario cadastrarUsuario(Usuario usuario) {
@@ -185,28 +185,28 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
 
     // RENDA RECORRENTE
     @Override
-    public RendaRecorrente cadastrarRenda(RendaRecorrenteRequest request) {
-        RendaRecorrente renda = RendaRecorrenteMapper.toEntity(request);
+    public Renda cadastrarRenda(RendaRecorrenteRequest request) {
+        Renda renda = RendaRecorrenteMapper.toEntity(request);
         ContaBancaria conta = listarPorIdConta(request.contaId());
         renda.setConta(conta);
         return rendaPort.addRendaRecorrente(renda);
     }
 
     @Override
-    public List<RendaRecorrente> listarTodasRendas() {
+    public List<Renda> listarTodasRendas() {
         return rendaPort.listAllRendas();
     }
 
     @Override
-    public RendaRecorrente listarPorIdRenda(Long id) {
-        Optional<RendaRecorrente> opt = rendaPort.listByIdRenda(id);
+    public Renda listarPorIdRenda(Long id) {
+        Optional<Renda> opt = rendaPort.listByIdRenda(id);
         if (opt.isEmpty()){throw new EntidadeNotFoundException("Renda Não Encontrada");}
         return opt.get();
     }
 
     @Override
     public void excluirRenda(Long id) {
-        RendaRecorrente atualizar = listarPorIdRenda(id);
+        Renda atualizar = listarPorIdRenda(id);
         atualizar.setAtivo(false);
         rendaPort.addRendaRecorrente(atualizar);
     }

@@ -23,6 +23,7 @@ public class Despesa {
     @Column(name = "data_vencimento")
     private LocalDateTime dataVencimento;
     private Boolean ativo;
+    private Boolean paga;
     private Boolean parcelado;
 
     @ManyToOne @JoinColumn(name = "conta_id")
