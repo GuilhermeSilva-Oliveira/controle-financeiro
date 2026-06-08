@@ -9,6 +9,7 @@ public class DespesaMapper {
         Despesa despesa = new Despesa();
         despesa.setDescricao(request.descricao());
         despesa.setAtivo(request.ativo());
+        despesa.setPaga(request.paga());
         despesa.setDataVencimento(request.dataVencimento());
         despesa.setParcelado(request.parcelado());
         despesa.setPeriodo(request.periodo());
@@ -18,6 +19,6 @@ public class DespesaMapper {
 
     public static DespesaResponse toResponse(Despesa despesa){
         return new DespesaResponse(despesa.getId(),despesa.getDescricao(),despesa.getValor(),despesa.getPeriodo(),despesa.getDataVencimento(),
-                despesa.getAtivo(),despesa.getParcelado(),despesa.getConta());
+                despesa.getAtivo(),despesa.getPaga(),despesa.getParcelado(),despesa.getConta());
     }
 }

@@ -12,6 +12,6 @@ public class ReceitaStrategy implements MovimentacaoStrategy{
 
     @Override
     public Boolean supports(String tipoMovimentacao) {
-        return TipoMovimentacao.RECEITA.getStatus().equals(tipoMovimentacao.toUpperCase());
+        return TipoMovimentacao.ENTRADA.getStatus().equals(tipoMovimentacao.toUpperCase());
     }
 }

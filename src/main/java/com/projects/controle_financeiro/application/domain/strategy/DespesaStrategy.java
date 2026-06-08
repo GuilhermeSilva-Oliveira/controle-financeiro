@@ -14,6 +14,6 @@ public class DespesaStrategy implements MovimentacaoStrategy{
 
     @Override
     public Boolean supports(String tipoMovimentacao) {
-        return TipoMovimentacao.DESPESA.getStatus().equals(tipoMovimentacao.toUpperCase());
+        return TipoMovimentacao.SAIDA.getStatus().equals(tipoMovimentacao.toUpperCase());
     }
 }

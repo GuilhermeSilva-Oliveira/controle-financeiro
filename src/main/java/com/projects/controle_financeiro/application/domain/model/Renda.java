@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RendaRecorrente {
+public class Renda {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String tipoRenda;

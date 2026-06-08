@@ -36,8 +36,8 @@ public interface RegistroEntidadesUseCase {
     void excluirDespesa(Despesa despesa,Long id);
 
     // RENDA RECORRENTE
-    RendaRecorrente cadastrarRenda(RendaRecorrenteRequest request);
-    List<RendaRecorrente> listarTodasRendas();
-    RendaRecorrente listarPorIdRenda(Long id);
+    Renda cadastrarRenda(RendaRecorrenteRequest request);
+    List<Renda> listarTodasRendas();
+    Renda listarPorIdRenda(Long id);
     void excluirRenda(Long id);
 }

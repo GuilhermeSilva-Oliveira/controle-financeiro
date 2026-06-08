@@ -1,6 +1,7 @@
 package com.projects.controle_financeiro.adapter.in.controllers;
 
 import com.projects.controle_financeiro.application.service.StatusDespesaService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ public class StatusDespesaController {
         this.service = service;
     }
 
-    @PostMapping("/vencimentos")
+    @GetMapping("/vencimentos")
     public void validarVencimentos(){
         service.validarVencimento();
     }
