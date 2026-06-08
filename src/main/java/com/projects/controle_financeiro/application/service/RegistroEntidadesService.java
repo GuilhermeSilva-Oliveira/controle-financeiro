@@ -158,7 +158,6 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     // DESPESA
     @Override
     public Despesa cadastrarDespesa(DespesaRequest request) {
-        // ADICIONAR VALIDAÇÃO POR TIPO DE DESPESA
         log.info("Iniciando Cadastro de Despesa");
         Despesa despesa = DespesaMapper.toEntity(request);
         ContaBancaria conta = listarPorIdConta(request.contaId());
@@ -261,7 +260,7 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         movimentacao.setPeriodo(despesa.getPeriodo());
         movimentacao.setConta(despesa.getConta());
         movimentacao.setValor(despesa.getValor());
-        movimentacao.setTipoMovimentacao(TipoMovimentacao.DESPESA.getStatus());
+        movimentacao.setTipoMovimentacao(TipoMovimentacao.SAIDA.getStatus());
         movimentacao.setRecorrente(despesa.getAtivo());
         movimentacao.setData(LocalDateTime.now());
         Double novoSaldo = despesa.getConta().getSaldo() - despesa.getValor();

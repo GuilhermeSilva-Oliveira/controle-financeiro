@@ -19,10 +19,16 @@ public class Investimento {
     private Long id;
     private String tipo;
     private Double valorInicial;
-    private Double valorAtual;
+    private Double valorAtual; // montante
     private Double rentabilidade;
     private Double meta;
     private String instituicao;
-    private Boolean ativo;
+    // DataInicio e DataFim, Renda Fixa ou Variável
+    private Boolean ativo; // remover
     private String motivo;
 }
+// BIG MATHEUS
+// Meta de Investimento (Valor mínimo mensal por exemplo)
+// API de busca de boletos associados ao CPF
+// Renda - Despesa = Líquido Automático
+// IA para Relatório de Despesas
