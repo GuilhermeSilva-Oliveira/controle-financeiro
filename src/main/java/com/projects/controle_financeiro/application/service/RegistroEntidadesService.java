@@ -36,6 +36,7 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     private final MovimentacaoPort movimentacaoPort;
     private final DespesaPort despesaPort;
     private final RendaRecorrentePort rendaPort;
+    private final AtrasoPort atrasoPort;
     private final List<MovimentacaoStrategy> strategies;
 
     // USUÁRIO
@@ -151,6 +152,15 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         if (validarPagamento(valor,despesa.getValor())){despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));}
         else {throw new RegraNegocioException("Valor Pago Insuficiente");}
         Movimentacao movimentacao = gerarMovimentacao(despesa);
+        Optional<Atraso> optAtraso = atrasoPort.listByIdAtraso(despesa.getId());
+        if (optAtraso.isPresent()){
+            Atraso atraso = optAtraso.get();
+            atraso.setFinalizado(true);
+            atrasoPort.registrarAtraso(atraso);
+        }
+        despesa.setPaga(true);
+        despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));
+        despesaPort.addDespesa(despesa);
         log.info("Pagamento de Despesa Finalizado");
         return movimentacaoPort.addMovimentacao(movimentacao);
     }
