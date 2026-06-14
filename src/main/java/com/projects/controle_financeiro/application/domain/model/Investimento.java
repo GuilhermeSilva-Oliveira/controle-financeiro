@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -19,12 +21,13 @@ public class Investimento {
     private Long id;
     private String tipo;
     private Double valorInicial;
-    private Double valorAtual; // montante
+    private Double montante; // montante
     private Double rentabilidade;
     private Double meta;
     private String instituicao;
-    // DataInicio e DataFim, Renda Fixa ou Variável
-    private Boolean ativo; // remover
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
+    private String tipoRenda; // Renda Fixa ou Variável
     private String motivo;
 }
 // BIG MATHEUS

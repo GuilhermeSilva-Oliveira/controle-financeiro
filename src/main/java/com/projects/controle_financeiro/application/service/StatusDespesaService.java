@@ -1,9 +1,6 @@
 package com.projects.controle_financeiro.application.service;
 
 import com.projects.controle_financeiro.adapter.in.dto.mapper.AtrasoMapper;
-import com.projects.controle_financeiro.adapter.out.repository.DespesaRepository;
-import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNotFoundException;
-import com.projects.controle_financeiro.application.domain.model.Atraso;
 import com.projects.controle_financeiro.application.domain.model.Despesa;
 import com.projects.controle_financeiro.application.port.in.StatusDespesaUseCase;
 import com.projects.controle_financeiro.application.port.out.AtrasoPort;
@@ -35,7 +32,7 @@ public class StatusDespesaService implements StatusDespesaUseCase {
         }
     }
 
-    // FUNÇÕES COMPLEMENTARES
+    // -------------------------- FUNÇÕES COMPLEMENTARES --------------------------
     public Boolean validarTempo(LocalDateTime vencimento){
         return vencimento.isEqual(LocalDateTime.now()) || vencimento.isBefore(LocalDateTime.now());
     }
