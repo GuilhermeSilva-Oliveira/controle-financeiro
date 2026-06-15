@@ -59,10 +59,10 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     @Override
     public Usuario listarPorIdUsuario(Long id) {
         log.info("Iniciando Busca de Usuário");
-        Optional<Usuario> opt = usuarioPort.listByIdUsuario(id);
-        if (opt.isEmpty()){throw new EntidadeNotFoundException("Usuário Não Encontrado");}
+        Usuario usuario = usuarioPort.listByIdUsuario(id).orElseThrow(()->
+                new EntidadeNotFoundException("Usuário Não Encontrado"));
         log.info("Usuário Encontrado");
-        return opt.get();
+        return usuario;
     }
 
     @Override
@@ -280,11 +280,9 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
 
     public void shouldRegistrarRenda(Movimentacao movimentacao){
         List<Movimentacao> movimentacoes = listarTodasMovimentacoes();
-        Boolean newMovimentacao = true;
+        boolean newMovimentacao = true;
         for (Movimentacao m : movimentacoes){
-            if (m.getDescricao().equals(movimentacao.getDescricao())){
-                newMovimentacao = false;
-            }
+            if (m.getDescricao().equals(movimentacao.getDescricao())){newMovimentacao = false;break;}
         }
         if (newMovimentacao){
             RendaRecorrenteRequest request = new RendaRecorrenteRequest(movimentacao.getDescricao().toUpperCase(),movimentacao.getValor(),movimentacao.getPeriodo(),movimentacao.getData(),movimentacao.getConta().getId());
