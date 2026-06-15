@@ -8,6 +8,7 @@ import com.projects.controle_financeiro.adapter.in.dto.mapper.MovimentacaoMapper
 import com.projects.controle_financeiro.adapter.in.dto.mapper.RendaRecorrenteMapper;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
 import com.projects.controle_financeiro.adapter.in.dto.renda_recorrente.RendaRecorrenteRequest;
+import com.projects.controle_financeiro.application.domain.enums.PeriodoDespesa;
 import com.projects.controle_financeiro.application.domain.enums.StatusMovimentacao;
 import com.projects.controle_financeiro.application.domain.enums.TipoConta;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
@@ -149,7 +150,15 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
     public Movimentacao pagarDespesa(Long id, Double valor) {
         log.info("Iniciando Pagamento de Despesa");
         Despesa despesa = listarPorIdDespesa(id);
-        if (validarPagamento(valor,despesa.getValor())){despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));}
+        PeriodoDespesa periodo = PeriodoDespesa.fromPeriodo(despesa.getPeriodo());
+        if (validarPagamento(valor,despesa.getValor())){ switch (periodo){
+                case MENSAL:
+                    despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1)); break;
+                case ANUAL:
+                    despesa.setDataVencimento(despesa.getDataVencimento().plusYears(1)); break;
+                case DIARIO:
+                    despesa.setDataVencimento(despesa.getDataVencimento().plusDays(1)); break;
+        }}
         else {throw new RegraNegocioException("Valor Pago Insuficiente");}
         Movimentacao movimentacao = gerarMovimentacao(despesa);
         Optional<Atraso> optAtraso = atrasoPort.listByIdAtraso(despesa.getId());
@@ -159,7 +168,6 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
             atrasoPort.registrarAtraso(atraso);
         }
         despesa.setPaga(true);
-        despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1));
         despesaPort.addDespesa(despesa);
         log.info("Pagamento de Despesa Finalizado");
         return movimentacaoPort.addMovimentacao(movimentacao);
