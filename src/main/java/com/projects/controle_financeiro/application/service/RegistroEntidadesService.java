@@ -282,10 +282,7 @@ public class RegistroEntidadesService implements RegistroEntidadesUseCase {
         List<Movimentacao> movimentacoes = listarTodasMovimentacoes();
         boolean newMovimentacao = true;
         for (Movimentacao m : movimentacoes){
-            if (m.getDescricao().equals(movimentacao.getDescricao())){
-                newMovimentacao = false;
-                break;
-            }
+            if (m.getDescricao().equals(movimentacao.getDescricao())){newMovimentacao = false;break;}
         }
         if (newMovimentacao){
             RendaRecorrenteRequest request = new RendaRecorrenteRequest(movimentacao.getDescricao().toUpperCase(),movimentacao.getValor(),movimentacao.getPeriodo(),movimentacao.getData(),movimentacao.getConta().getId());
