@@ -2,6 +2,8 @@ package com.projects.controle_financeiro.application.service;
 
 import com.projects.controle_financeiro.adapter.in.dto.conta.ContaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.conta.ContaRequest;
+import com.projects.controle_financeiro.application.domain.enums.MotivoRegistro;
+import com.projects.controle_financeiro.application.domain.enums.PeriodoRegistro;
 import com.projects.controle_financeiro.application.domain.enums.TipoConta;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeBadRequestException;
@@ -21,6 +23,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EnumService {
+
     public static boolean validarTipoConta(String tipo){
         for (TipoConta tipoConta : TipoConta.values()) {
             if (tipoConta.name().equals(tipo)) {
@@ -31,6 +34,20 @@ public class EnumService {
     public static boolean validarTipoMovimentacao(String tipo){
         for (TipoMovimentacao tipoMovimentacao : TipoMovimentacao.values()) {
             if (tipoMovimentacao.name().equals(tipo)) {
+                return true;
+            }} return false;
+    }
+
+    public static boolean validarMotivoRegistro(String tipo){
+        for (MotivoRegistro motivoRegistro : MotivoRegistro.values()) {
+            if (motivoRegistro.name().equals(tipo)) {
+                return true;
+            }} return false;
+    }
+
+    public static boolean validarPeriodoRegistro(String tipo){
+        for (PeriodoRegistro periodoRegistro : PeriodoRegistro.values()) {
+            if (periodoRegistro.name().equals(tipo)) {
                 return true;
             }} return false;
     }

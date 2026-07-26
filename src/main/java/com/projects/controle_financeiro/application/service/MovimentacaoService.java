@@ -47,6 +47,7 @@ public class MovimentacaoService implements MovimentacaoUseCase {
         return switch (tipoMovimentacao) {
             case SAIDA -> conta.getSaldo() - request.valor();
             case ENTRADA -> conta.getSaldo() + request.valor();
+            default -> throw new IllegalStateException("Valor Inesperado: " + tipoMovimentacao);
         };
     }
 }
