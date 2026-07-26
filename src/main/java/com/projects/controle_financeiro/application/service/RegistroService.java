@@ -4,6 +4,7 @@ import com.projects.controle_financeiro.adapter.in.dto.conta.ContaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroMapper;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroRequest;
 import com.projects.controle_financeiro.application.domain.enums.MotivoRegistro;
+import com.projects.controle_financeiro.application.domain.enums.PeriodoRegistro;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeBadRequestException;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNotFoundException;
@@ -17,8 +18,10 @@ import com.projects.controle_financeiro.application.port.out.RegistroPort;
 import com.projects.controle_financeiro.application.port.out.UsuarioPort;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -34,12 +37,23 @@ public class RegistroService implements RegistroUseCase {
         if (!EnumService.validarTipoMovimentacao(request.tipoRegistro())) {throw new EntidadeBadRequestException("Tipo de registro inválido");}
         if (!EnumService.validarMotivoRegistro(request.motivo())) {throw new EntidadeBadRequestException("Motivo de registro inválido");}
         if (!EnumService.validarPeriodoRegistro(request.periodo())) {throw new EntidadeBadRequestException("Período de registro inválido");}
-        return registroPort.cadastrar(RegistroMapper.toEntity(request, TipoMovimentacao.valueOf(request.tipoRegistro()), MotivoRegistro.valueOf(request.motivo()), conta));
+        LocalDate dataVencimento = obterDataVencimento(request.ultimoRegistro(), request.periodo());
+        return registroPort.cadastrar(RegistroMapper.toEntity(request, TipoMovimentacao.valueOf(request.tipoRegistro()), MotivoRegistro.valueOf(request.motivo()), conta, dataVencimento));
     }
 
     @Override
     public List<RegistroFinanceiro> listar() {
         return registroPort.listar();
+    }
+
+//    --------- FUNÇÕES COMPLEMENTARES ---------
+    public LocalDate obterDataVencimento(LocalDate ultimoRegistro, String periodo){
+        if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.MENSAL)) {
+           return ultimoRegistro.plusMonths(1);
+        }else if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.ANUAL)) {
+            return ultimoRegistro.plusYears(1);
+        }
+        return ultimoRegistro.plusDays(1);
     }
 }
 

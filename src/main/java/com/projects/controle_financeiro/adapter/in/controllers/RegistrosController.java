@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 // ----------- TODOS -------------
 // TODO 1: Adicionar Validations
 // TODO 2: Alerta para Movimentacões com Valor de Retirada Acima do Saldo da Conta
+// TODO 3: Alerta para Prazos de Despesas Próximos
+// TODO 4: Sistema de Gerenciamento de Contas Otimizado
 
 @RestController
 @RequestMapping("/v1/registros")

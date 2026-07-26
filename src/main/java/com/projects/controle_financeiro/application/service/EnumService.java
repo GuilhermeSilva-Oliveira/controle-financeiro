@@ -38,16 +38,16 @@ public class EnumService {
             }} return false;
     }
 
-    public static boolean validarMotivoRegistro(String tipo){
+    public static boolean validarMotivoRegistro(String motivo){
         for (MotivoRegistro motivoRegistro : MotivoRegistro.values()) {
-            if (motivoRegistro.name().equals(tipo)) {
+            if (motivoRegistro.name().equals(motivo)) {
                 return true;
             }} return false;
     }
 
-    public static boolean validarPeriodoRegistro(String tipo){
+    public static boolean validarPeriodoRegistro(String periodo){
         for (PeriodoRegistro periodoRegistro : PeriodoRegistro.values()) {
-            if (periodoRegistro.name().equals(tipo)) {
+            if (periodoRegistro.name().equals(periodo)) {
                 return true;
             }} return false;
     }

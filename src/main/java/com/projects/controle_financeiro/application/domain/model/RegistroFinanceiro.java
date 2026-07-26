@@ -18,6 +18,7 @@ public class RegistroFinanceiro {
     private String tipoRegistro;
     private Double valor;
     private LocalDate ultimoRegistro;
+    private LocalDate vencimentoRegistro;
     private String periodo;
     private Boolean ativo;
     private Boolean pago;

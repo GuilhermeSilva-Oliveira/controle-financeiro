@@ -7,10 +7,11 @@ import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
 import com.projects.controle_financeiro.application.domain.model.Movimentacao;
 import com.projects.controle_financeiro.application.domain.model.RegistroFinanceiro;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class RegistroMapper {
-    public static RegistroFinanceiro toEntity(RegistroRequest request, TipoMovimentacao tipo, MotivoRegistro motivo, ContaBancaria conta){
+    public static RegistroFinanceiro toEntity(RegistroRequest request, TipoMovimentacao tipo, MotivoRegistro motivo, ContaBancaria conta, LocalDate dataVencimento){
         RegistroFinanceiro r = new RegistroFinanceiro();
         r.setAtivo(request.ativo());
         r.setConta(conta);
@@ -20,6 +21,7 @@ public class RegistroMapper {
         r.setPeriodo(request.periodo());
         r.setTipoRegistro(tipo.getTipoMovimentacao());
         r.setUltimoRegistro(request.ultimoRegistro());
+        r.setVencimentoRegistro(dataVencimento);
         return r;
     }
 }
