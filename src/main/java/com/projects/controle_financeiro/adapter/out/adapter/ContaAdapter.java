@@ -26,4 +26,9 @@ public class ContaAdapter implements ContaPort {
     public List<ContaBancaria> listar() {
         return repository.findAll();
     }
+
+    @Override
+    public Optional<ContaBancaria> buscarPorId(Integer id) {
+        return repository.findById(id);
+    }
 }
