@@ -12,4 +12,5 @@ public interface RegistroPort {
     RegistroFinanceiro cadastrar(RegistroFinanceiro registro);
     List<RegistroFinanceiro> listar();
     Optional<RegistroFinanceiro> buscarPorId(Integer id);
+    Optional<RegistroFinanceiro> buscarPorMotivo(String motivo);
 }

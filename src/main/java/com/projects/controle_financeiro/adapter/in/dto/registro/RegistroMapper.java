@@ -15,7 +15,7 @@ public class RegistroMapper {
         RegistroFinanceiro r = new RegistroFinanceiro();
         r.setAtivo(request.ativo());
         r.setConta(conta);
-        r.setMotivo(motivo.getMotivoRegistro());
+        r.setMotivo(MotivoRegistro.valueOf(request.motivo()).getMotivoRegistro());
         r.setPago(request.pago());
         r.setValor(request.valor());
         r.setPeriodo(request.periodo());

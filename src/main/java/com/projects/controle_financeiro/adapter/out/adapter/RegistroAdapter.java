@@ -31,4 +31,9 @@ public class RegistroAdapter implements RegistroPort {
     public Optional<RegistroFinanceiro> buscarPorId(Integer id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Optional<RegistroFinanceiro> buscarPorMotivo(String motivo) {
+        return repository.findByMotivo(motivo);
+    }
 }

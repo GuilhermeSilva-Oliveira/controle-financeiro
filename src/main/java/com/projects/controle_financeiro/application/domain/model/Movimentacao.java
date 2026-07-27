@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 public class Movimentacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String descricao;
+    private String motivo;
     private Double valor;
     private LocalDateTime dataMovimentacao;
     private String tipoMovimentacao;
+    private Boolean isPagandoDespesa;
     @ManyToOne @JoinColumn(name = "conta_id")
     private ContaBancaria conta;
 }

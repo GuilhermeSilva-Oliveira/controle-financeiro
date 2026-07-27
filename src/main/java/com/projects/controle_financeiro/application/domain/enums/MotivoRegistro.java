@@ -1,10 +1,10 @@
 package com.projects.controle_financeiro.application.domain.enums;
 
 public enum MotivoRegistro {
-    FACULDADE("Pagar Fatura Faculdade"),
-    SALARIO("Recebimento de Salário"),
-    INTERNET("Pagar Fatura Internet"),
-    ALIMENTACAO("Gasto com Alimentação");
+    FACULDADE("FACULDADE"),
+    SALARIO("SALARIO"),
+    INTERNET("INTERNET"),
+    ALIMENTACAO("ALIMENTACAO");
 
     private final String motivoRegistro;
     MotivoRegistro(String motivoRegistro){this.motivoRegistro = motivoRegistro;}

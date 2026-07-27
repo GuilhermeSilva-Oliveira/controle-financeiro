@@ -12,11 +12,12 @@ import java.time.LocalDateTime;
 public class MovimentacaoMapper {
     public static Movimentacao toEntity(MovimentacaoRequest request, TipoMovimentacao tipo, ContaBancaria conta){
         Movimentacao m = new Movimentacao();
-        m.setDescricao(request.descricao());
+        m.setMotivo(request.motivo());
         m.setValor(request.valor());
         m.setDataMovimentacao(LocalDateTime.now());
         m.setConta(conta);
         m.setTipoMovimentacao(tipo.getTipoMovimentacao());
+        m.setIsPagandoDespesa(request.isPagandoDespesa());
         return m;
     }
 }
