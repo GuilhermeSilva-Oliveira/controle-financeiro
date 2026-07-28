@@ -8,7 +8,6 @@ import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNo
 import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
 import com.projects.controle_financeiro.application.domain.model.Usuario;
 import com.projects.controle_financeiro.application.port.in.ContaUseCase;
-import com.projects.controle_financeiro.application.port.in.UsuarioUseCase;
 import com.projects.controle_financeiro.application.port.out.ContaPort;
 import com.projects.controle_financeiro.application.port.out.UsuarioPort;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,7 @@ public class ContaService implements ContaUseCase {
     @Override
     public ContaBancaria cadastrar(ContaRequest request) {
         Usuario usuario = usuarioPort.buscarPorId(request.usuarioId()).orElseThrow(() -> new EntidadeNotFoundException("Usuário não encontrado"));
-        if (!EnumService.validarTipoConta(request.tipoConta())) {throw new EntidadeBadRequestException("Tipo de Conta Não Registrado");}
+        if (!AuxiliarService.validarTipoConta(request.tipoConta())) {throw new EntidadeBadRequestException("Tipo de Conta Não Registrado");}
         return contaPort.cadastrar(ContaMapper.toEntity(request,TipoConta.valueOf(request.tipoConta()),usuario));
     }
 
