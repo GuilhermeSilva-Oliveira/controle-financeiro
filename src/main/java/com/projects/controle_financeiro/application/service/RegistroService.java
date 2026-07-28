@@ -37,7 +37,10 @@ public class RegistroService implements RegistroUseCase {
         if (!EnumService.validarTipoMovimentacao(request.tipoRegistro())) {throw new EntidadeBadRequestException("Tipo de registro inválido");}
         if (!EnumService.validarMotivoRegistro(request.motivo())) {throw new EntidadeBadRequestException("Motivo de registro inválido");}
         if (!EnumService.validarPeriodoRegistro(request.periodo())) {throw new EntidadeBadRequestException("Período de registro inválido");}
-        LocalDate dataVencimento = obterDataVencimento(request.ultimoRegistro(), request.periodo());
+        LocalDate dataVencimento = EnumService.obterDataVencimento(request.ultimoRegistro(), request.periodo());
+        if (request.tipoRegistro().equals(TipoMovimentacao.DESPESA.getTipoMovimentacao())) {
+            conta.setSaldoSimulado(conta.getSaldoSimulado() - request.valor());
+        }
         return registroPort.cadastrar(RegistroMapper.toEntity(request, TipoMovimentacao.valueOf(request.tipoRegistro()), MotivoRegistro.valueOf(request.motivo()), conta, dataVencimento));
     }
 
@@ -47,13 +50,6 @@ public class RegistroService implements RegistroUseCase {
     }
 
 //    --------- FUNÇÕES COMPLEMENTARES ---------
-    public LocalDate obterDataVencimento(LocalDate ultimoRegistro, String periodo){
-        if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.MENSAL)) {
-           return ultimoRegistro.plusMonths(1);
-        }else if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.ANUAL)) {
-            return ultimoRegistro.plusYears(1);
-        }
-        return ultimoRegistro.plusDays(1);
-    }
+
 }
 

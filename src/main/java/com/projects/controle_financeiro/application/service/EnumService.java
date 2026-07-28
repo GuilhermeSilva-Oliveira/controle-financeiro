@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -50,6 +51,15 @@ public class EnumService {
             if (periodoRegistro.name().equals(periodo)) {
                 return true;
             }} return false;
+    }
+
+    public static LocalDate obterDataVencimento(LocalDate ultimoRegistro, String periodo){
+        if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.MENSAL)) {
+            return ultimoRegistro.plusMonths(1);
+        }else if (PeriodoRegistro.valueOf(periodo).equals(PeriodoRegistro.ANUAL)) {
+            return ultimoRegistro.plusYears(1);
+        }
+        return ultimoRegistro.plusDays(1);
     }
 }
 

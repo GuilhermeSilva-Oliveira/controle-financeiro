@@ -5,9 +5,11 @@ import com.projects.controle_financeiro.application.domain.model.RegistroFinance
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface RegistroRepository extends JpaRepository<RegistroFinanceiro,Integer> {
     Optional<RegistroFinanceiro> findByMotivo(String motivo);
+    List<RegistroFinanceiro> findByTipoRegistro(String tipoRegistro);
 }

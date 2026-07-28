@@ -12,6 +12,7 @@ public class ContaMapper {
         c.setSaldo(request.saldo());
         c.setTipoConta(tipo.getTipoConta());
         c.setUsuario(usuario);
+        c.setSaldoSimulado(request.saldo());
         return c;
     }
 }

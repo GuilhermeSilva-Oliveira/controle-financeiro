@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface RegistroPort {
     RegistroFinanceiro cadastrar(RegistroFinanceiro registro);
     List<RegistroFinanceiro> listar();
+    List<RegistroFinanceiro> listarPorTipoRegistro(String tipoRegistro);
     Optional<RegistroFinanceiro> buscarPorId(Integer id);
     Optional<RegistroFinanceiro> buscarPorMotivo(String motivo);
 }

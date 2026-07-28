@@ -28,6 +28,11 @@ public class RegistroAdapter implements RegistroPort {
     }
 
     @Override
+    public List<RegistroFinanceiro> listarPorTipoRegistro(String tipoRegistro) {
+        return repository.findByTipoRegistro(tipoRegistro);
+    }
+
+    @Override
     public Optional<RegistroFinanceiro> buscarPorId(Integer id) {
         return repository.findById(id);
     }

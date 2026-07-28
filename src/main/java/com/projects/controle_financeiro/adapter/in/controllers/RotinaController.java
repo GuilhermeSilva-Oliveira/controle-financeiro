@@ -1,6 +1,5 @@
 package com.projects.controle_financeiro.adapter.in.controllers;
 
-import com.projects.controle_financeiro.adapter.in.dto.conta.ContaMapper;
 import com.projects.controle_financeiro.adapter.in.dto.conta.ContaRequest;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroRequest;
@@ -10,10 +9,7 @@ import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
 import com.projects.controle_financeiro.application.domain.model.Movimentacao;
 import com.projects.controle_financeiro.application.domain.model.RegistroFinanceiro;
 import com.projects.controle_financeiro.application.domain.model.Usuario;
-import com.projects.controle_financeiro.application.service.ContaService;
-import com.projects.controle_financeiro.application.service.MovimentacaoService;
-import com.projects.controle_financeiro.application.service.RegistroService;
-import com.projects.controle_financeiro.application.service.UsuarioService;
+import com.projects.controle_financeiro.application.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,31 +25,26 @@ import org.springframework.web.bind.annotation.RestController;
 // TODO 5: Adicionar Saldo Simulado (Com Descontos Mensais de Despesas)
 
 @RestController
-@RequestMapping("/v1/registros")
+@RequestMapping("/v1/rotina")
 @AllArgsConstructor
-public class RegistrosController {
-    private final UsuarioService usuarioService;
-    private final ContaService contaService;
-    private final MovimentacaoService movimentacaoService;
-    private final RegistroService registroService;
+public class RotinaController {
+    private final RotinaService service;
 
-    @PostMapping("/usuarios")
-    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody UsuarioRequest request){
-        return ResponseEntity.ok(usuarioService.cadastrar(UsuarioMapper.toEntity(request)));
+    @PostMapping("/receitas")
+    public ResponseEntity<Void> verificarReceitas(){
+        service.registrarReceitas();
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/contas")
-    public ResponseEntity<ContaBancaria> cadastrarConta(@RequestBody ContaRequest request){
-        return ResponseEntity.ok(contaService.cadastrar(request));
+    @PostMapping("/despesas")
+    public ResponseEntity<Void> verificarDespesas(){
+        service.descontarDespesas();
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/movimentacoes")
-    public ResponseEntity<Movimentacao> cadastrarMovimentacao(@RequestBody MovimentacaoRequest request){
-        return ResponseEntity.ok(movimentacaoService.cadastrar(request));
-    }
-
-    @PostMapping("/registro")
-    public ResponseEntity<RegistroFinanceiro> cadastrarDespesa(@RequestBody RegistroRequest request){
-        return ResponseEntity.ok(registroService.cadastrar(request));
+    @PostMapping("/vencimentos")
+    public ResponseEntity<Void> verificarVencimentos(){
+        service.alertarVencimentos();
+        return ResponseEntity.ok().build();
     }
 }

@@ -14,6 +14,7 @@ public class ContaBancaria {
     private Integer id;
     private String nomeBanco;
     private Double saldo;
+    private Double saldoSimulado;
     private String tipoConta;
     @ManyToOne @JoinColumn(name = "usuario_id")
     private Usuario usuario;
