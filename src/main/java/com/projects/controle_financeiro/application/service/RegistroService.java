@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -41,6 +42,54 @@ public class RegistroService implements RegistroUseCase {
     @Override
     public List<RegistroFinanceiro> listar() {
         return registroPort.listar();
+    }
+
+    @Override
+    public Double calcularRenda() {
+        List<RegistroFinanceiro> registros = registroPort.listar();
+        double renda = 0.0;
+        for (RegistroFinanceiro registro : registros) {
+            if (registro.getTipoRegistro().equals(TipoMovimentacao.RECEITA.getTipoMovimentacao())) {
+                renda += registro.getValor();
+            }
+        }
+        return renda;
+    }
+
+    @Override
+    public Double calcularDespesa() {
+        List<RegistroFinanceiro> registros = registroPort.listar();
+        double despesa = 0.0;
+        for (RegistroFinanceiro registro : registros) {
+            if (registro.getTipoRegistro().equals(TipoMovimentacao.DESPESA.getTipoMovimentacao())) {
+                despesa += registro.getValor();
+            }
+        }
+        return despesa;
+    }
+
+    @Override
+    public List<RegistroFinanceiro> listarDespesas() {
+        List<RegistroFinanceiro> registros = registroPort.listar();
+        List<RegistroFinanceiro> despesas = new ArrayList<>();
+        for (RegistroFinanceiro registro : registros) {
+            if (registro.getTipoRegistro().equals(TipoMovimentacao.DESPESA.getTipoMovimentacao())) {
+                despesas.add(registro);
+            }
+        }
+        return despesas;
+    }
+
+    @Override
+    public List<RegistroFinanceiro> listarRendas() {
+        List<RegistroFinanceiro> registros = registroPort.listar();
+        List<RegistroFinanceiro> rendas = new ArrayList<>();
+        for (RegistroFinanceiro registro : registros) {
+            if (registro.getTipoRegistro().equals(TipoMovimentacao.RECEITA.getTipoMovimentacao())) {
+                rendas.add(registro);
+            }
+        }
+        return rendas;
     }
 }
 

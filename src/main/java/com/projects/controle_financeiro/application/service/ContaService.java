@@ -34,5 +34,11 @@ public class ContaService implements ContaUseCase {
     public List<ContaBancaria> listar() {
         return contaPort.listar();
     }
+
+    @Override
+    public Double calcularSaldo() {
+        ContaBancaria conta = contaPort.buscarPorId(1).orElseThrow(() -> new EntidadeNotFoundException("Conta não encontrada"));
+        return conta.getSaldo();
+    }
 }
 

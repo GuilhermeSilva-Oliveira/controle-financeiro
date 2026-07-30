@@ -11,4 +11,5 @@ import java.util.List;
 public interface ContaUseCase {
     ContaBancaria cadastrar(ContaRequest request);
     List<ContaBancaria> listar();
+    Double calcularSaldo();
 }

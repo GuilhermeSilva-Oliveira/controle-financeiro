@@ -12,4 +12,8 @@ import java.util.List;
 public interface RegistroUseCase {
     RegistroFinanceiro cadastrar(RegistroRequest request);
     List<RegistroFinanceiro> listar();
+    Double calcularRenda();
+    Double calcularDespesa();
+    List<RegistroFinanceiro> listarDespesas();
+    List<RegistroFinanceiro> listarRendas();
 }

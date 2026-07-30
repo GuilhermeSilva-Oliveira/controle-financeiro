@@ -24,4 +24,8 @@ public class RegistroMapper {
         r.setVencimentoRegistro(dataVencimento);
         return r;
     }
+
+    public static RegistroResponse toResponse(RegistroFinanceiro r){
+        return  new RegistroResponse(r.getMotivo(),r.getValor());
+    }
 }
