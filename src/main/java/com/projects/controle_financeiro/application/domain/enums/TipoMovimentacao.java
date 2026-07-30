@@ -1,8 +1,8 @@
 package com.projects.controle_financeiro.application.domain.enums;
 
 public enum TipoMovimentacao {
-    ENTRADA("Entrada de Valor"),
-    SAIDA("Saída de Valor"),
+    ENTRADA("ENTRADA"),
+    SAIDA("SAIDA"),
     RECEITA("RECEITA"),
     DESPESA("DESPESA");
 

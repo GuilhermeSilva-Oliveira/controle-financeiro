@@ -1,14 +1,12 @@
 package com.projects.controle_financeiro.adapter.in.dto.registro;
 
-import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoControleResponse;
 import com.projects.controle_financeiro.application.domain.enums.MotivoRegistro;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
-import com.projects.controle_financeiro.application.domain.model.Movimentacao;
 import com.projects.controle_financeiro.application.domain.model.RegistroFinanceiro;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class RegistroMapper {
     public static RegistroFinanceiro toEntity(RegistroRequest request, TipoMovimentacao tipo, MotivoRegistro motivo, ContaBancaria conta, LocalDate dataVencimento){
@@ -26,6 +24,14 @@ public class RegistroMapper {
     }
 
     public static RegistroResponse toResponse(RegistroFinanceiro r){
-        return  new RegistroResponse(r.getMotivo(),r.getValor());
+        return new RegistroResponse(r.getMotivo(),r.getValor());
+    }
+
+    public static ReceitaControleResponse toReceitaControle(RegistroFinanceiro r){
+        return  new ReceitaControleResponse(r.getMotivo(),r.getPeriodo(),r.getUltimoRegistro(),r.getValor());
+    }
+
+    public static DespesaControleResponse toDespesaControle(RegistroFinanceiro r){
+        return  new DespesaControleResponse(r.getMotivo(),r.getPeriodo(),r.getVencimentoRegistro(),r.getValor());
     }
 }

@@ -5,6 +5,7 @@ import com.projects.controle_financeiro.application.domain.enums.TipoConta;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
 import com.projects.controle_financeiro.application.domain.model.Movimentacao;
+import com.projects.controle_financeiro.application.domain.model.RegistroFinanceiro;
 import com.projects.controle_financeiro.application.domain.model.Usuario;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,9 @@ public class MovimentacaoMapper {
         m.setTipoMovimentacao(tipo.getTipoMovimentacao());
         m.setIsPagandoDespesa(request.isPagandoDespesa());
         return m;
+    }
+
+    public static MovimentacaoControleResponse toResponseControle(Movimentacao m){
+        return new MovimentacaoControleResponse(m.getMotivo(), m.getTipoMovimentacao(), m.getDataMovimentacao().toLocalDate(), m.getValor());
     }
 }

@@ -1,16 +1,11 @@
 package com.projects.controle_financeiro.adapter.in.controllers;
 
-import com.projects.controle_financeiro.adapter.in.dto.conta.ContaRequest;
-import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoControleResponse;
+import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoMapper;
+import com.projects.controle_financeiro.adapter.in.dto.registro.DespesaControleResponse;
+import com.projects.controle_financeiro.adapter.in.dto.registro.ReceitaControleResponse;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroMapper;
-import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroRequest;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroResponse;
-import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioMapper;
-import com.projects.controle_financeiro.adapter.in.dto.usuario.UsuarioRequest;
-import com.projects.controle_financeiro.application.domain.model.ContaBancaria;
-import com.projects.controle_financeiro.application.domain.model.Movimentacao;
-import com.projects.controle_financeiro.application.domain.model.RegistroFinanceiro;
-import com.projects.controle_financeiro.application.domain.model.Usuario;
 import com.projects.controle_financeiro.application.service.ContaService;
 import com.projects.controle_financeiro.application.service.MovimentacaoService;
 import com.projects.controle_financeiro.application.service.RegistroService;
@@ -20,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 // ----------- TODOS -------------
 // TODO 1: Adicionar Validations
@@ -68,5 +62,20 @@ public class FrontEndController {
     @GetMapping("/usuario")
     public ResponseEntity<String> usuario(){
         return ResponseEntity.ok(usuarioService.listar().getFirst().getNome());
+    }
+
+    @GetMapping("/lista/controle/movimentacoes")
+    public ResponseEntity<List<MovimentacaoControleResponse>> listarControleMovimentacoes(){
+        return ResponseEntity.ok(movimentacaoService.listar().stream().map(MovimentacaoMapper::toResponseControle).toList());
+    }
+
+    @GetMapping("/lista/controle/rendas")
+    public ResponseEntity<List<ReceitaControleResponse>> listarControleRendas(){
+        return ResponseEntity.ok(registroService.listarRendas().stream().map(RegistroMapper::toReceitaControle).toList());
+    }
+
+    @GetMapping("/lista/controle/despesas")
+    public ResponseEntity<List<DespesaControleResponse>> listarControleDespesas(){
+        return ResponseEntity.ok(registroService.listarDespesas().stream().map(RegistroMapper::toDespesaControle).toList());
     }
 }
