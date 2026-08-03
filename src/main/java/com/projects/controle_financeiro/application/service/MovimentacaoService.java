@@ -2,6 +2,7 @@ package com.projects.controle_financeiro.application.service;
 
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoMapper;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoRequest;
+import com.projects.controle_financeiro.adapter.in.dto.registro.MotivoControleResponse;
 import com.projects.controle_financeiro.application.domain.enums.TipoMovimentacao;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeBadRequestException;
 import com.projects.controle_financeiro.application.domain.exceptions.EntidadeNotFoundException;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,7 +37,6 @@ public class MovimentacaoService implements MovimentacaoUseCase {
         if (!AuxiliarService.validarTipoMovimentacao(request.tipoMovimentacao())) {throw new EntidadeBadRequestException("Tipo de Movimentação Não Registrado");}
         conta.setSaldo(novoSaldo(conta,TipoMovimentacao.valueOf(request.tipoMovimentacao()), request));
         contaPort.cadastrar(conta); // ATUALIZANDO CONTA
-        if (AuxiliarService.validarMotivoRegistro(request.motivo())) {pagarDespesa(request);}
         if (request.isPagandoDespesa()){
             List<AlertaAtraso> alertas = alertaPort.listar();
             for (AlertaAtraso alerta : alertas) {
@@ -66,6 +67,23 @@ public class MovimentacaoService implements MovimentacaoUseCase {
         RegistroFinanceiro registro = registroPort.buscarPorMotivo(request.motivo()).orElseThrow(() -> new EntidadeNotFoundException("Registro não encontrado"));
         registro.setPago(true);
         registroPort.cadastrar(registro); // ATUALIZANDO REGISTRO
+    }
+
+    @Override
+    public List<MotivoControleResponse> listarMotivos() {
+        List<Movimentacao> registros = movimentacaoPort.listar();
+        return registros.stream()
+                .collect(Collectors.groupingBy(
+                        Movimentacao::getMotivo,
+                        Collectors.summingDouble(Movimentacao::getValor)
+                ))
+                .entrySet()
+                .stream()
+                .map(entry -> new MotivoControleResponse(
+                        entry.getKey(),
+                        entry.getValue()
+                ))
+                .toList();
     }
 }
 

@@ -2,10 +2,7 @@ package com.projects.controle_financeiro.adapter.in.controllers;
 
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoControleResponse;
 import com.projects.controle_financeiro.adapter.in.dto.movimentacao.MovimentacaoMapper;
-import com.projects.controle_financeiro.adapter.in.dto.registro.DespesaControleResponse;
-import com.projects.controle_financeiro.adapter.in.dto.registro.ReceitaControleResponse;
-import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroMapper;
-import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroResponse;
+import com.projects.controle_financeiro.adapter.in.dto.registro.*;
 import com.projects.controle_financeiro.application.service.ContaService;
 import com.projects.controle_financeiro.application.service.MovimentacaoService;
 import com.projects.controle_financeiro.application.service.RegistroService;
@@ -77,5 +74,10 @@ public class FrontEndController {
     @GetMapping("/lista/controle/despesas")
     public ResponseEntity<List<DespesaControleResponse>> listarControleDespesas(){
         return ResponseEntity.ok(registroService.listarDespesas().stream().map(RegistroMapper::toDespesaControle).toList());
+    }
+
+    @GetMapping("/lista/controle/motivo")
+    public ResponseEntity<List<MotivoControleResponse>> listarMotivos(){
+        return ResponseEntity.ok(movimentacaoService.listarMotivos());
     }
 }

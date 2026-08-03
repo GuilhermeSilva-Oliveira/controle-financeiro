@@ -1,5 +1,6 @@
 package com.projects.controle_financeiro.application.service;
 
+import com.projects.controle_financeiro.adapter.in.dto.registro.MotivoControleResponse;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroMapper;
 import com.projects.controle_financeiro.adapter.in.dto.registro.RegistroRequest;
 import com.projects.controle_financeiro.application.domain.enums.MotivoRegistro;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
